@@ -1,0 +1,18 @@
+services:
+  transactionservice:
+    image: ${DOCKER_REGISTRY-}transactionservice
+    build:
+      context: .
+      dockerfile: 0. Core/TransactionService/Dockerfile
+
+  consolidationservice:
+    image: ${DOCKER_REGISTRY-}consolidationservice
+    build:
+     context: .
+     dockerfile: 0. Core/ConsolidationService/Dockerfile
+
+  apigateway:
+    image: ${DOCKER_REGISTRY-}apigateway
+    build:
+     context: .
+     dockerfile: 2. Crosscutting/ApiGateway/Dockerfile
