@@ -4,18 +4,18 @@
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
 USER $APP_UID
 WORKDIR /app
-EXPOSE 8080
-EXPOSE 8081
+EXPOSE 5000
 
 
 # This stage is used to build the service project
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["ApiGateway/ApiGateway.csproj", "ApiGateway/"]
-RUN dotnet restore "./ApiGateway/ApiGateway.csproj"
+COPY ["2.Crosscutting/ApiGateway/ApiGateway.csproj", "2.Crosscutting/ApiGateway/"]
+COPY ["2.Crosscutting/SharedKernel/SharedKernel.csproj", "2.Crosscutting/SharedKernel/"]
+RUN dotnet restore "./2.Crosscutting/ApiGateway/ApiGateway.csproj"
 COPY . .
-WORKDIR "/src/ApiGateway"
+WORKDIR "/src/2.Crosscutting/ApiGateway"
 RUN dotnet build "./ApiGateway.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage

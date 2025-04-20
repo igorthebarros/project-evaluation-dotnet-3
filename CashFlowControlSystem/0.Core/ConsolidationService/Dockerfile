@@ -1,7 +1,7 @@
 # See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
 # This stage is used when running from VS in fast mode (Default for Debug configuration)
-FROM mcr.microsoft.com/dotnet/runtime:9.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
 USER $APP_UID
 WORKDIR /app
 
@@ -10,10 +10,11 @@ WORKDIR /app
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["ConsolidationService/ConsolidationService.csproj", "ConsolidationService/"]
-RUN dotnet restore "./ConsolidationService/ConsolidationService.csproj"
+COPY ["0.Core/ConsolidationService/ConsolidationService.csproj", "0.Core/ConsolidationService/"]
+COPY ["2.Crosscutting/SharedKernel/SharedKernel.csproj", "2.Crosscutting/SharedKernel/"]
+RUN dotnet restore "./0.Core/ConsolidationService/ConsolidationService.csproj"
 COPY . .
-WORKDIR "/src/ConsolidationService"
+WORKDIR "/src/0.Core/ConsolidationService"
 RUN dotnet build "./ConsolidationService.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage

@@ -13,4 +13,12 @@
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\2.Crosscutting\SharedKernel\SharedKernel.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Application\" />
+  </ItemGroup>
+
 </Project>
