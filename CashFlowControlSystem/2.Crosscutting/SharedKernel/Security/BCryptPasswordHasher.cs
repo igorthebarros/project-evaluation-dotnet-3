@@ -25,6 +25,9 @@ namespace SharedKernel.Security
         /// <returns>True if the password matches the hash, false otherwise.</returns>
         public bool VerifyPassword(string password, string hash)
         {
+            if (string.IsNullOrWhiteSpace(hash))
+                return false;
+
             return BCrypt.Net.BCrypt.Verify(password, hash);
         }
     }

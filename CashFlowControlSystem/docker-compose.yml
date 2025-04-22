@@ -5,14 +5,19 @@ services:
       build:
         context: .
         dockerfile: "2.Crosscutting/ApiGateway/Dockerfile"
+      environment:
+          - ASPNETCORE_ENVIRONMENT=Development
+          - ASPNETCORE_HTTP_PORTS=5000
       ports:
-        - "5000:80"
+        - "5000:5000"
       command: ["dotnet", "ApiGateway.dll"]
       healthcheck:
         test: ["CMD", "curl", "-f", "http://localhost:80/health"]
         interval: 30s
         timeout: 10s
-        retries: 3    
+        retries: 3
+      depends_on:
+        - database
 
     transactionservice:
       image: transactionservice:latest
@@ -21,7 +26,7 @@ services:
         context: .
         dockerfile: "0.Core/TransactionService/Dockerfile"
       ports:
-        - "5001:80"
+        - "5001:5001"
       command: ["dotnet", "TransactionService.dll"]
       healthcheck:
         test: ["CMD", "curl", "-f", "http://localhost:80/health"]
@@ -36,10 +41,33 @@ services:
         context: .
         dockerfile: "0.Core/ConsolidationService/Dockerfile"
       ports:
-        - "5002:80"
+        - "5002:5002"
       command: ["dotnet", "ConsolidationService.dll"]
       healthcheck:
         test: ["CMD", "curl", "-f", "http://localhost:80/health"]
         interval: 30s
         timeout: 10s
         retries: 3
+          
+    database:
+      container_name: database
+      image: postgres:13
+      environment:
+        POSTGRES_DB: developer
+        POSTGRES_USER: developer
+        POSTGRES_PASSWORD: developer
+      ports:
+        - "5432:5432"
+      restart: unless-stopped    
+
+    pgadmin:
+      container_name: pgadmin
+      image: dpage/pgadmin4
+      restart: unless-stopped
+      environment:
+        PGADMIN_DEFAULT_EMAIL: admin@admin.com
+        PGADMIN_DEFAULT_PASSWORD: admin
+      ports:
+        - "5050:80"
+      depends_on:
+        - database
