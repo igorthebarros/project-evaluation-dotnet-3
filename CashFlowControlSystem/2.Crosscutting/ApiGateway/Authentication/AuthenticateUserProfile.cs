@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using SharedKernel.Commands.AuthenticateUser;
 using SharedKernel.Common;
 
 namespace ApiGateway.Authentication
@@ -16,6 +17,12 @@ namespace ApiGateway.Authentication
             CreateMap<User, AuthenticateUserResponse>()
                 .ForMember(dest => dest.Token, opt => opt.Ignore())
                 .ForMember(dest => dest.Role, opt => opt.MapFrom(src => src.Role.ToString()));
+
+            CreateMap<AuthenticateUserCommand, AuthenticateUserRequest>();
+            CreateMap<AuthenticateUserRequest, AuthenticateUserCommand>();
+            CreateMap<AuthenticateUserResponse, AuthenticateUserResult>();
+            CreateMap<AuthenticateUserResult, AuthenticateUserResponse>();
+
         }
     }
 }
