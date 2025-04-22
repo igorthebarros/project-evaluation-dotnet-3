@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using SharedKernel.Common;
@@ -9,11 +10,15 @@ namespace ORM
     public class DefaultContext : DbContext
     {
         public DbSet<User> Users { get; set; }
-        
+        public DbSet<Merchant> Merchants { get; set; }
+        public DbSet<Transaction> Transactions { get; set; }
+        public DbSet<DailyBalance> DailyBalances { get; set; }
+
         public DefaultContext(DbContextOptions<DefaultContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.HasDefaultSchema("cashflowsystem_schema");
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
             base.OnModelCreating(modelBuilder);
         }
