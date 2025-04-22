@@ -1,6 +1,7 @@
 ﻿using SharedKernel.Enums;
 using SharedKernel.Interfaces;
 using SharedKernel.Validation;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SharedKernel.Common
 {
@@ -39,12 +40,14 @@ namespace SharedKernel.Common
         /// Gets the user's role in the system.
         /// Determines the user's permissions and access levels.
         /// </summary>
+        [Column(TypeName = "varchar(8)")]
         public UserRole Role { get; set; }
 
         /// <summary>
         /// Gets the user's current status.
         /// Indicates whether the user is active, inactive, or blocked in the system.
         /// </summary>
+        [Column(TypeName = "varchar(9)")]
         public UserStatus Status { get; set; }
 
         /// <summary>
